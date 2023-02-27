@@ -1,13 +1,15 @@
-service: my-store-app
+org: daryanovak
+app: serverless-flowers-shop
+service: serverless-flowers-shop
 
 frameworkVersion: "3"
 
 provider:
   name: aws
   runtime: nodejs14.x
-  region: eu-west-1
+  region: us-east-1
   # setup profile for AWS CLI.
-  # profile: node-aws
+  profile: daryanovak
 
 plugins:
   - serverless-finch
@@ -19,7 +21,7 @@ plugins:
 
 custom:
   client:
-    bucketName: my-store-app
+    bucketName: serverless-flowers-shop
     distributionFolder: dist
   s3BucketName: ${self:custom.client.bucketName}
 
