@@ -32,7 +32,7 @@ export default function ProductsTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((product) => (
+          {data.map((product: any) => (
             <TableRow key={product.id}>
               <TableCell component="th" scope="row">
                 {product.title}
