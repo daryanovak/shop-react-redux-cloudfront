@@ -4,17 +4,33 @@ import { AvailableProduct } from "~/models/Product";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import React from "react";
 
-export function useAvailableProducts() {
-  return useQuery<AvailableProduct[], AxiosError>(
-    "available-products",
-    async () => {
-      const res = await axios.get<AvailableProduct[]>(
-        `${API_PATHS.bff}/product/available`
-      );
-      return res.data;
+// export function useAvailableProducts() {
+//   return useQuery<AvailableProduct[], AxiosError>(
+//     "available-products",
+//     async () => {
+//       const res = await axios.get<AvailableProduct[]>(
+//         `${API_PATHS.bff}/product/available`
+//       );
+//       return res.data;
+//     }
+//   );
+// }
+
+  export function useAvailableProducts() {
+  const fetchProducts = async () => {
+    const response = await fetch(
+      `${API_PATHS.product}/products`
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch products");
     }
-  );
+    return response.json();
+  };
+
+  return useQuery("products", fetchProducts);
 }
+
 
 export function useInvalidateAvailableProducts() {
   const queryClient = useQueryClient();
@@ -65,3 +81,5 @@ export function useDeleteAvailableProduct() {
     })
   );
 }
+
+
