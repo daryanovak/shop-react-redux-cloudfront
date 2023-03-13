@@ -1,10 +1,11 @@
 import axios, { AxiosError } from "axios";
+import csvToJson from 'csvtojson';
 import API_PATHS from "~/constants/apiPaths";
 import { AvailableProduct } from "~/models/Product";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import React from "react";
 
-// export function useAvailableProducts() {
+// export function useAvailableProducts() { 
 //   return useQuery<AvailableProduct[], AxiosError>(
 //     "available-products",
 //     async () => {
@@ -16,16 +17,36 @@ import React from "react";
 //   );
 // }
 
-  export function useAvailableProducts() {
+// export function useAvailableProducts() { //task2
+//   const fetchProducts = async () => {
+//     const response = await fetch(
+//       `${API_PATHS.product}/products`
+//     );
+
+//     if (!response.ok) {
+//       throw new Error("Failed to fetch products");
+//     }
+//     return response.json();
+//   };
+
+//   return useQuery("products", fetchProducts);
+// }
+
+
+
+export function useAvailableProducts() { //task5
   const fetchProducts = async () => {
-    const response = await fetch(
-      `${API_PATHS.product}/products`
-    );
+    const response = await fetch(`${API_PATHS.product}/import?name=flowers`);
 
     if (!response.ok) {
-      throw new Error("Failed to fetch products");
+      throw new Error('Network response was not ok');
     }
-    return response.json();
+    const url = await response.json();
+    const dataResponse = await fetch(url);
+    const csvData = await dataResponse.text();
+    const jsonData = await csvToJson().fromString(csvData);
+
+    return jsonData;
   };
 
   return useQuery("products", fetchProducts);
