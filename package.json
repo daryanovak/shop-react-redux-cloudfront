@@ -32,6 +32,7 @@
     "@mui/styles": "^5.8.7",
     "@types/yup": "^0.29.14",
     "axios": "^0.27.2",
+    "csvtojson": "^2.0.10",
     "formik": "^2.2.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -60,10 +61,10 @@
     "serverless": "^3.20.0",
     "serverless-finch": "^4.0.0",
     "serverless-s3-cleaner": "^2.0.1",
+    "serverless-single-page-app-plugin": "file:./.serverless_plugins/serverless-single-page-app-plugin",
     "typescript": "^4.7.4",
     "vite": "^2.9.13",
-    "vitest": "^0.17.1",
-    "serverless-single-page-app-plugin": "file:./.serverless_plugins/serverless-single-page-app-plugin"
+    "vitest": "^0.17.1"
   },
   "msw": {
     "workerDirectory": "public"
