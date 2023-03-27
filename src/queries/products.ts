@@ -33,20 +33,34 @@ import React from "react";
 // }
 
 
-
-export function useAvailableProducts() { //task5
+export function useAvailableProducts() {
   const fetchProducts = async () => {
-    const response = await fetch(`${API_PATHS.product}/import?name=flowers`);
+    const authorization_token = localStorage.getItem('authorization_token');
+    const headers = {
+      'Authorization': `Basic ${authorization_token}`
+    };
+    try {
+      const response = await fetch(`${API_PATHS.product}/import?name=flowers`, { headers });
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+      if (response.status === 400) {
+        alert('Bad request. Please check your input parameters.');
+        throw new Error('Bad request');
+      } else if (response.status === 401) {
+        alert('Unauthorized access. Please check your login credentials.');
+        throw new Error('Unauthorized access');
+      }
+
+      const url = await response.json();
+      const dataResponse = await fetch(url);
+      const csvData = await dataResponse.text();
+      const jsonData = await csvToJson().fromString(csvData);
+
+      return jsonData;
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred. Please try again later.');
+      throw new Error('Fetch failed');
     }
-    const url = await response.json();
-    const dataResponse = await fetch(url);
-    const csvData = await dataResponse.text();
-    const jsonData = await csvToJson().fromString(csvData);
-
-    return jsonData;
   };
 
   return useQuery("products", fetchProducts);
